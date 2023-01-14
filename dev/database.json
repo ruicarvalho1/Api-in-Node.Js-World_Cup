@@ -1,5 +1,5 @@
 {
-  "defaultEnv": {"ENV": "NODE_ENV"},
+  "defaultEnv": { "ENV": "NODE_ENV" },
   "dev": {
     "driver": "pg",
     "host": { "ENV": "POSTGRES_HOSTNAME" },
@@ -12,7 +12,7 @@
   "test": {
     "driver": "pg",
     "host": "db-test",
-    "port": "5432",
+    "port": "54320",
     "database": "sd-test",
     "user": "sd-test",
     "password": "sd-test",

@@ -1,28 +1,28 @@
+version: "3.8"
 services:
-  dev:
-    container_name: sd-dev
-    build: dev
-    volumes:
-      - "./dev:/usr/src/app"
-    depends_on:
-      - db
-    ports:
-      - "3000:3000"
-      - "4000:4000"
-
   db:
-    container_name: sd-db
-    build: db/prod
+    image: postgres
+    container_name: local_pgdb
+    restart: always
+    ports:
+      - "54320:5432"
+    environment:
+      POSTGRES_USER: ipvc
+      POSTGRES_PASSWORD: admin
     volumes:
-      - pg_data:/var/lib/postgresql/data/
+      - local_pgdata:/Users/ruicarvalho/Desktop/Trabalho_Servicos_Distribuidos/docker/volumes/postgres
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
     ports:
-      - "6000:5432"
-
-  db-test:
-    container_name: sd-test-db
-    build: db/test
-    ports:
-      - "6001:5432"
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ipvc@ipvc.pt
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin-data:/Users/ruicarvalho/Desktop/Trabalho_Servicos_Distribuidos/docker/volumes/postgres
 
 volumes:
-  pg_data:
+  local_pgdata:
+  pgadmin-data:

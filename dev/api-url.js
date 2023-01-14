@@ -1,3 +1,3 @@
-const config = require("./config")
+const config = require("./config");
 
-module.exports = (url) => `${config.baseUrl}/${url}`
+module.exports = (url) => `${config.baseUrl}/${url}`;
