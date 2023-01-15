@@ -15,13 +15,13 @@ module.exports = {
   },
 
   getById: async (id) => {
-    const recipes = await db
+    const competitions = await db
       .query(
         `
             SELECT 
               * 
             FROM
-              recipes
+            competitions
             WHERE
               id = $1
         `,
@@ -29,11 +29,11 @@ module.exports = {
       )
       .then((q) => q.rows);
 
-    if (recipes.length > 0) {
-      return recipes[0];
+    if (competitions.length > 0) {
+      return competitions[0];
     }
 
-    throw new Error(`Recipe with id='${id}' not found!`);
+    throw new Error(`Competitions with id='${id}' not found!`);
   },
 
   getIngredients: async (id) => {

@@ -1,3 +1,7 @@
 module.exports = {
-    recipes: require("./recipes")
-}
+  competitions: require("./competitions"),
+  stadiums: require("./stadiums"),
+  teams: require("./teams"),
+  games: require("./games"),
+  stages: require("./stages"),
+};

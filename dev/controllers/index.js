@@ -1,4 +1,8 @@
 module.exports = {
-    recipes: require("./recipes"),
-    version: require("./version")
-}
+  competitions: require("./competitions"),
+  stadiums: require("./stadiums"),
+  teams: require("./teams"),
+  games: require("./games"),
+  stages: require("./stages"),
+  version: require("./version"),
+};

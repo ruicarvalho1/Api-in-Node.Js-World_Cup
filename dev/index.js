@@ -20,12 +20,41 @@ app.use(cors({ credentials: true, origin: true }));
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerConfig));
 
 [
+  //get version
   { method: "get", url: "version", cb: controllers.version.get },
 
-  { method: "get", url: "competitions", cb: controllers.recipes.getAll },
-  { method: "post", url: "recipes", cb: controllers.recipes.insert },
+  //get all competitions && getbyId competitions
+  { method: "get", url: "competitions", cb: controllers.competitions.getAll },
+  {
+    method: "get",
+    url: "competitions/:id",
+    cb: controllers.competitions.getById,
+  },
 
-  { method: "get", url: "recipes/:id", cb: controllers.recipes.getById },
+  //get all stadiums && getById Stadiums
+  { method: "get", url: "stadiums", cb: controllers.stadiums.getAll },
+  { method: "get", url: "stadiums/:id", cb: controllers.stadiums.getById },
+
+  //get all teams && getById teams
+  { method: "get", url: "teams", cb: controllers.teams.getAll },
+  { method: "get", url: "teams/:id", cb: controllers.teams.getById },
+
+  //get all games && getById games
+  { method: "get", url: "games", cb: controllers.games.getAll },
+  { method: "get", url: "games/:id", cb: controllers.games.getById },
+
+  //get all stages && getById stages
+  { method: "get", url: "stages", cb: controllers.stages.getAll },
+  { method: "get", url: "stages/:id", cb: controllers.stages.getById },
+
+  //{ method: "post", url: "recipes", cb: controllers.competitions.insert },
+
+  /*
+  {
+    method: "get",
+    url: "competitions/:id",
+    cb: controllers.competitions.getById,
+  },
   {
     method: "get",
     url: "recipes/:id/ingredients",
@@ -36,6 +65,7 @@ app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerConfig));
     url: "recipes/:id/ingredients/condiments",
     cb: controllers.recipes.getCondimentsByRecipeId,
   },
+  */
 ].forEach(({ method, url, cb }) => {
   app[method](apiUrl(url), cb);
 });
