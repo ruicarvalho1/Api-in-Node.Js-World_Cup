@@ -15,4 +15,43 @@ module.exports = {
       res.status(404).send({ error: message });
     }
   },
+
+  updatebyIDStadiums: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name } = req.body;
+      const { city } = req.body;
+
+      const updatedStadiums = await services.stadiums.updatebyIDStadiums(
+        id,
+        name,
+        city
+      );
+      res.status(200).json({
+        success: true,
+        data: updatedStadiums,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
+
+  deletebyIDStadiums: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deleteStadiums = await services.stadiums.deletebyIDStadiums(id);
+      res.status(200).json({
+        success: true,
+        data: deleteStadiums,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
 };

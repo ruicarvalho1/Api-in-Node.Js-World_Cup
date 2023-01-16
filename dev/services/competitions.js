@@ -36,7 +36,61 @@ module.exports = {
     throw new Error(`Competitions with id='${id}' not found!`);
   },
 
-  getIngredients: async (id) => {
+  updatebyIDCompetitions: async (id, year) => {
+    let competitions;
+    try {
+      competitions = await db.query(
+        `SELECT 
+        * 
+      FROM
+      competitions
+      WHERE
+        id = $1`,
+        [id]
+      );
+      if (competitions.rows.length > 0) {
+        const updateQuery = `UPDATE competitions SET year = $1 WHERE id = $2`;
+        await db.query(updateQuery, [year, id]);
+        console.log(`Pokemon with id '${id} was updated successfully`);
+        competitions = await db.query(
+          `SELECT * FROM competitions WHERE id = $1`,
+          [id]
+        );
+      } else {
+        throw new Error(`Competition with id='${id}' not found!`);
+      }
+    } catch (e) {
+      throw new Error(e);
+    }
+    return competitions.rows[0];
+  },
+
+  deletebyIDCompetitions: async (id) => {
+    let competition;
+    try {
+      competition = await db.query(
+        `SELECT 
+              * 
+            FROM
+              competitions
+            WHERE
+              id = $1`,
+        [id]
+      );
+      if (competition.rows.length > 0) {
+        const deleteQuery = `DELETE FROM competitions WHERE id = $1`;
+        await db.query(deleteQuery, [id]);
+        console.log(`Competition with id ${id} was deleted successfully`);
+      } else {
+        throw new Error(`Competition with id='${id}' not found!`);
+      }
+    } catch (e) {
+      throw new Error(e);
+    }
+  },
+};
+
+/* getIngredients: async (id) => {
     return await db
       .query(
         `
@@ -87,5 +141,4 @@ module.exports = {
         [name, imageUrl, originalUrl]
       )
       .then((q) => q.rows);
-  },
-};
+  }, */

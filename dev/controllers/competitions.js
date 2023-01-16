@@ -1,3 +1,4 @@
+const { competitions } = require(".");
 const services = require("../services");
 
 module.exports = {
@@ -13,6 +14,41 @@ module.exports = {
       res.status(200).send(competition);
     } catch ({ message }) {
       res.status(404).send({ error: message });
+    }
+  },
+
+  updatebyIDCompetitions: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { year } = req.body;
+      const updatedCompetition =
+        await services.competitions.updatebyIDCompetitions(id, year);
+      res.status(200).json({
+        success: true,
+        data: updatedCompetition,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
+
+  deletebyIDCompetitions: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deleteCompetition =
+        await services.competitions.deletebyIDCompetitions(id);
+      res.status(200).json({
+        success: true,
+        data: deleteCompetition,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
     }
   },
 

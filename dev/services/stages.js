@@ -35,4 +35,28 @@ module.exports = {
 
     throw new Error(`Stages with id='${id}' not found!`);
   },
+
+  deletebyIDStages: async (id) => {
+    let stages;
+    try {
+      stages = await db.query(
+        `SELECT 
+              * 
+            FROM
+            stages
+            WHERE
+              id = $1`,
+        [id]
+      );
+      if (stages.rows.length > 0) {
+        const deleteQuery = `DELETE FROM stages WHERE id = $1`;
+        await db.query(deleteQuery, [id]);
+        console.log(`Stages with id ${id} was deleted successfully`);
+      } else {
+        throw new Error(`Stages with id='${id}' not found!`);
+      }
+    } catch (e) {
+      throw new Error(e);
+    }
+  },
 };

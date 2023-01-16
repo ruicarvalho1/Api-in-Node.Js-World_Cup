@@ -13,4 +13,20 @@ module.exports = {
       res.status(404).send({ error: message });
     }
   },
+
+  deletebyIDGames: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deleteGames = await services.games.deletebyIDGames(id);
+      res.status(200).json({
+        success: true,
+        data: deleteGames,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
 };

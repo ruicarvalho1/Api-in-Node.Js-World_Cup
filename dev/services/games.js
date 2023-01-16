@@ -35,4 +35,28 @@ module.exports = {
 
     throw new Error(`Games with id='${id}' not found!`);
   },
+
+  deletebyIDGames: async (id) => {
+    let games;
+    try {
+      games = await db.query(
+        `SELECT 
+              * 
+            FROM
+            games
+            WHERE
+              id = $1`,
+        [id]
+      );
+      if (games.rows.length > 0) {
+        const deleteQuery = `DELETE FROM games WHERE id = $1`;
+        await db.query(deleteQuery, [id]);
+        console.log(`Games with id ${id} was deleted successfully`);
+      } else {
+        throw new Error(`Games with id='${id}' not found!`);
+      }
+    } catch (e) {
+      throw new Error(e);
+    }
+  },
 };
