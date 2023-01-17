@@ -86,12 +86,40 @@ module.exports = {
     }
   },
 
-  getNumEspectatorById: async (req, res) => {
+  updatebyIDGames: async (req, res) => {
     try {
-      let games = await services.games.getNumEspectatorById(req.params.id);
-      res.status(200).send(games);
-    } catch ({ message }) {
-      res.status(404).send({ error: message });
+      const { id } = req.params;
+      const { goals_team_house } = req.body;
+      const { goals_team_away } = req.body;
+      const { win_condition } = req.body;
+      const { half_time_home_goals } = req.body;
+      const { half_time_away_goals } = req.body;
+      const { referee } = req.body;
+      const { assistant_1 } = req.body;
+      const { assistant_2 } = req.body;
+      const { num_spectators } = req.body;
+
+      const updatedGames = await services.games.updatebyIDGames(
+        id,
+        goals_team_house,
+        goals_team_away,
+        win_condition,
+        half_time_home_goals,
+        half_time_away_goals,
+        referee,
+        assistant_1,
+        assistant_2,
+        num_spectators
+      );
+      res.status(200).json({
+        success: true,
+        data: updatedGames,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
     }
   },
 

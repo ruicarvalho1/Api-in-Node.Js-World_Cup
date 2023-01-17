@@ -58,8 +58,9 @@ module.exports = {
     throw new Error(`Competitions Stage with id='${id}' not found!`);
   },
 
-  updatebyIDCompetitions: async (id, year) => {
+  updatebyIDCompetitions: async (id, year, stage) => {
     let competitions;
+
     try {
       competitions = await db.query(
         `SELECT 
@@ -71,15 +72,23 @@ module.exports = {
         [id]
       );
       if (competitions.rows.length > 0) {
-        const updateQuery = `UPDATE competitions SET year = $1 WHERE id = $2`;
-        await db.query(updateQuery, [year, id]);
-        console.log(`Pokemon with id '${id} was updated successfully`);
+        let oldyear = competitions.rows[0].year;
+        let oldstage = competitions.rows[0].stage;
+
+        if (year != oldyear && year != null) {
+          const updateyear = `UPDATE competitions SET year = $1  WHERE id = $2`;
+          await db.query(updateyear, [year, id]);
+        } else if (stage != oldstage && stage != null) {
+          const updatestage = `UPDATE competitions SET stage = $1  WHERE id = $2`;
+          await db.query(updatestage, [stage, id]);
+        }
+        console.log(`Competitions with id '${id} was updated successfully`);
         competitions = await db.query(
           `SELECT * FROM competitions WHERE id = $1`,
           [id]
         );
       } else {
-        throw new Error(`Competition with id='${id}' not found!`);
+        throw new Error(`competitions with id='${id}' not found!`);
       }
     } catch (e) {
       throw new Error(e);

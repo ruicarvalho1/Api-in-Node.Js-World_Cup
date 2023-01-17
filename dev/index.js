@@ -97,6 +97,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
   //get all games && getById games
   { method: "get", url: "games", cb: controllers.games.getAll },
   { method: "get", url: "games/:id", cb: controllers.games.getById },
+
+  {
+    method: "put",
+    url: "games/:id",
+    cb: controllers.games.updatebyIDGames,
+  },
+
+  {
+    method: "delete",
+    url: "games/:id",
+    cb: controllers.games.deletebyIDGames,
+  },
   {
     method: "get",
     url: "games/:id/goals_team_house",
@@ -136,17 +148,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
     method: "get",
     url: "games/:id/assistant_2",
     cb: controllers.games.getAssistant2ById,
-  },
-  {
-    method: "get",
-    url: "games/:id/num_espectators",
-    cb: controllers.games.getNumEspectatorById,
-  },
-
-  {
-    method: "delete",
-    url: "games/:id",
-    cb: controllers.games.deletebyIDGames,
   },
 ].forEach(({ method, url, cb }) => {
   app[method](apiUrl(url), cb);

@@ -82,6 +82,7 @@ module.exports = {
 
   updatebyIDTeams: async (id, name, initials) => {
     let teams;
+
     try {
       teams = await db.query(
         `SELECT 
@@ -93,8 +94,16 @@ module.exports = {
         [id]
       );
       if (teams.rows.length > 0) {
-        const updateQuery = `UPDATE teams SET name = $1, initials= $2 WHERE id = $3`;
-        await db.query(updateQuery, [name, initials, id]);
+        let oldname = teams.rows[0].name;
+        let oldInitials = teams.rows[0].initials;
+
+        if (name != oldname && name != null) {
+          const updateName = `UPDATE teams SET name = $1  WHERE id = $2`;
+          await db.query(updateName, [name, id]);
+        } else if (initials != oldInitials && initials != null) {
+          const updateInitials = `UPDATE teams SET initials = $1  WHERE id = $2`;
+          await db.query(updateInitials, [initials, id]);
+        }
         console.log(`Teams with id '${id} was updated successfully`);
         teams = await db.query(`SELECT * FROM teams WHERE id = $1`, [id]);
       } else {
