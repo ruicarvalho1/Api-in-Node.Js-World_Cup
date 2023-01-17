@@ -36,6 +36,50 @@ module.exports = {
     throw new Error(`Teams with id='${id}' not found!`);
   },
 
+  getNameById: async (id) => {
+    const teams = await db
+      .query(
+        `
+            SELECT 
+              name 
+            FROM
+            teams
+            WHERE
+              id = $1
+        `,
+        [id]
+      )
+      .then((q) => q.rows);
+
+    if (teams.length > 0) {
+      return teams[0];
+    }
+
+    throw new Error(`Teams name with id='${id}' not found!`);
+  },
+
+  getInitialsById: async (id) => {
+    const teams = await db
+      .query(
+        `
+            SELECT 
+              initials 
+            FROM
+            teams
+            WHERE
+              id = $1
+        `,
+        [id]
+      )
+      .then((q) => q.rows);
+
+    if (teams.length > 0) {
+      return teams[0];
+    }
+
+    throw new Error(`Teams initials with id='${id}' not found!`);
+  },
+
   updatebyIDTeams: async (id, name, initials) => {
     let teams;
     try {

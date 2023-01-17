@@ -1,4 +1,3 @@
-const { competitions } = require(".");
 const services = require("../services");
 
 module.exports = {
@@ -17,12 +16,25 @@ module.exports = {
     }
   },
 
+  getStagesById: async (req, res) => {
+    try {
+      let competition = await services.competitions.getStagesById(
+        req.params.id
+      );
+      res.status(200).send(competition);
+    } catch ({ message }) {
+      res.status(404).send({ error: message });
+    }
+  },
+
   updatebyIDCompetitions: async (req, res) => {
     try {
       const { id } = req.params;
       const { year } = req.body;
+      const { stage } = req.body;
+
       const updatedCompetition =
-        await services.competitions.updatebyIDCompetitions(id, year);
+        await services.competitions.updatebyIDCompetitions(id, year, stage);
       res.status(200).json({
         success: true,
         data: updatedCompetition,
@@ -51,8 +63,9 @@ module.exports = {
       });
     }
   },
+};
 
-  getIngredientsByRecipeId: async (req, res) => {
+/*  getIngredientsByRecipeId: async (req, res) => {
     try {
       res
         .status(200)
@@ -91,5 +104,4 @@ module.exports = {
     } catch ({ message }) {
       res.status(400).send({ error: message });
     }
-  },
-};
+  }, */

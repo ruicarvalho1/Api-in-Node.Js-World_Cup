@@ -36,8 +36,53 @@ module.exports = {
     throw new Error(`Stadiums with id='${id}' not found!`);
   },
 
+  getNameById: async (id) => {
+    const stadiums = await db
+      .query(
+        `
+            SELECT 
+              name 
+            FROM
+            stadiums
+            WHERE
+              id = $1
+        `,
+        [id]
+      )
+      .then((q) => q.rows);
+
+    if (stadiums.length > 0) {
+      return stadiums[0];
+    }
+
+    throw new Error(`Stadiums name with id='${id}' not found!`);
+  },
+
+  getCityById: async (id) => {
+    const stadiums = await db
+      .query(
+        `
+            SELECT 
+               city
+            FROM
+            stadiums
+            WHERE
+              id = $1
+        `,
+        [id]
+      )
+      .then((q) => q.rows);
+
+    if (stadiums.length > 0) {
+      return stadiums[0];
+    }
+
+    throw new Error(`Stadiums city with id='${id}' not found!`);
+  },
+
   updatebyIDStadiums: async (id, name, city) => {
     let stadiums;
+
     try {
       stadiums = await db.query(
         `SELECT 
@@ -49,8 +94,16 @@ module.exports = {
         [id]
       );
       if (stadiums.rows.length > 0) {
-        const updateQuery = `UPDATE stadiums SET name = $1, city= $2 WHERE id = $3`;
-        await db.query(updateQuery, [name, city, id]);
+        let oldname = stadiums.rows[0].name;
+        let oldcity = stadiums.rows[0].city;
+
+        if (name != oldname && name != null) {
+          const updatename = `UPDATE stadiums SET name = $1  WHERE id = $2`;
+          await db.query(updatename, [name, id]);
+        } else if (city != oldcity && city != null) {
+          const updatecity = `UPDATE stadiums SET city = $1  WHERE id = $2`;
+          await db.query(updatecity, [city, id]);
+        }
         console.log(`Stadiums with id '${id} was updated successfully`);
         teams = await db.query(`SELECT * FROM stadiums WHERE id = $1`, [id]);
       } else {

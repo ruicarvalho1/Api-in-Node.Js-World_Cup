@@ -14,6 +14,24 @@ module.exports = {
     }
   },
 
+  getNameById: async (req, res) => {
+    try {
+      let teams = await services.teams.getNameById(req.params.id);
+      res.status(200).send(teams);
+    } catch ({ message }) {
+      res.status(404).send({ error: message });
+    }
+  },
+
+  getInitialsById: async (req, res) => {
+    try {
+      let teams = await services.teams.getInitialsById(req.params.id);
+      res.status(200).send(teams);
+    } catch ({ message }) {
+      res.status(404).send({ error: message });
+    }
+  },
+
   updatebyIDTeams: async (req, res) => {
     try {
       const { id } = req.params;

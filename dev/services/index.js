@@ -3,5 +3,4 @@ module.exports = {
   stadiums: require("./stadiums"),
   teams: require("./teams"),
   games: require("./games"),
-  stages: require("./stages"),
 };

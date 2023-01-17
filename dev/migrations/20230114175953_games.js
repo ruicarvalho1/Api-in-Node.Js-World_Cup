@@ -13,11 +13,9 @@ exports.up = function (knex) {
     table.integer("id_stadium");
     table.integer("id_team_home");
     table.integer("id_team_away");
-    table.integer("id_stages");
     table.foreign("id_stadium").references("stadiums.id"); // references é o nome da tabela que queres referenciar e o id dessa tabela
     table.foreign("id_team_home").references("teams.id");
     table.foreign("id_team_away").references("teams.id");
-    table.foreign("id_stages").references("stages.id");
   });
 };
 

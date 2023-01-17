@@ -33,6 +33,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
     cb: controllers.competitions.getById,
   },
   {
+    method: "get",
+    url: "competitions/:id/Stages",
+    cb: controllers.competitions.getStagesById,
+  },
+  {
     method: "put",
     url: "competitions/:id/stages",
     cb: controllers.competitions.updatebyIDCompetitions,
@@ -48,6 +53,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
   { method: "get", url: "stadiums", cb: controllers.stadiums.getAll },
   { method: "get", url: "stadiums/:id", cb: controllers.stadiums.getById },
   {
+    method: "get",
+    url: "stadiums/:id/name",
+    cb: controllers.stadiums.getNameById,
+  },
+  {
+    method: "get",
+    url: "stadiums/:id/city",
+    cb: controllers.stadiums.getCityById,
+  },
+  {
     method: "put",
     url: "stadiums/:id",
     cb: controllers.stadiums.updatebyIDStadiums,
@@ -61,6 +76,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
   //get all teams && getById teams
   { method: "get", url: "teams", cb: controllers.teams.getAll },
   { method: "get", url: "teams/:id", cb: controllers.teams.getById },
+  { method: "get", url: "teams/:id/name", cb: controllers.teams.getNameById },
+  {
+    method: "get",
+    url: "teams/:id/initials",
+    cb: controllers.teams.getInitialsById,
+  },
   {
     method: "put",
     url: "teams/:id",
@@ -76,42 +97,57 @@ app.use(bodyParser.urlencoded({ extended: false }));
   //get all games && getById games
   { method: "get", url: "games", cb: controllers.games.getAll },
   { method: "get", url: "games/:id", cb: controllers.games.getById },
+  {
+    method: "get",
+    url: "games/:id/goals_team_house",
+    cb: controllers.games.getGoalsTeamHouseById,
+  },
+  {
+    method: "get",
+    url: "games/:id/goals_team_away",
+    cb: controllers.games.getGoalsTeamAwayById,
+  },
+  {
+    method: "get",
+    url: "games/:id/win_condition",
+    cb: controllers.games.getWinConditionById,
+  },
+  {
+    method: "get",
+    url: "games/:id/half_time_home_goals",
+    cb: controllers.games.getHalfTimeHomeGoalsById,
+  },
+  {
+    method: "get",
+    url: "games/:id/half_time_away_goals",
+    cb: controllers.games.getHalfTimeAwayGoalsById,
+  },
+  {
+    method: "get",
+    url: "games/:id/referee",
+    cb: controllers.games.getRefereeById,
+  },
+  {
+    method: "get",
+    url: "games/:id/assistant_1",
+    cb: controllers.games.getAssistant1Byid,
+  },
+  {
+    method: "get",
+    url: "games/:id/assistant_2",
+    cb: controllers.games.getAssistant2ById,
+  },
+  {
+    method: "get",
+    url: "games/:id/num_espectators",
+    cb: controllers.games.getNumEspectatorById,
+  },
 
   {
     method: "delete",
     url: "games/:id",
     cb: controllers.games.deletebyIDGames,
   },
-
-  //get all stages && getById stages
-  { method: "get", url: "stages", cb: controllers.stages.getAll },
-  { method: "get", url: "stages/:id", cb: controllers.stages.getById },
-
-  {
-    method: "delete",
-    url: "stages/:id",
-    cb: controllers.stages.deletebyIDStages,
-  },
-
-  //{ method: "post", url: "recipes", cb: controllers.competitions.insert },
-
-  /*
-  {
-    method: "get",
-    url: "competitions/:id",
-    cb: controllers.competitions.getById,
-  },
-  {
-    method: "get",
-    url: "recipes/:id/ingredients",
-    cb: controllers.recipes.getIngredientsByRecipeId,
-  },
-  {
-    method: "get",
-    url: "recipes/:id/ingredients/condiments",
-    cb: controllers.recipes.getCondimentsByRecipeId,
-  },
-  */
 ].forEach(({ method, url, cb }) => {
   app[method](apiUrl(url), cb);
 });
