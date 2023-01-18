@@ -14,15 +14,6 @@ module.exports = {
     }
   },
 
-  getNameById: async (req, res) => {
-    try {
-      let teams = await services.teams.getNameById(req.params.id);
-      res.status(200).send(teams);
-    } catch ({ message }) {
-      res.status(404).send({ error: message });
-    }
-  },
-
   getInitialsById: async (req, res) => {
     try {
       let teams = await services.teams.getInitialsById(req.params.id);
@@ -67,6 +58,20 @@ module.exports = {
         success: false,
         message: error.message,
       });
+    }
+  },
+  insertteams: async (req, res) => {
+    try {
+      const { name, initials } = req.body;
+
+      res.status(201).send(
+        await services.teams.insertteams({
+          name,
+          initials,
+        })
+      );
+    } catch ({ message }) {
+      res.status(400).send({ error: message });
     }
   },
 };

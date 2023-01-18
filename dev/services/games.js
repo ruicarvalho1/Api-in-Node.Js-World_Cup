@@ -36,164 +36,6 @@ module.exports = {
     throw new Error(`Games with id='${id}' not found!`);
   },
 
-  getGoalsTeamHouseById: async (id) => {
-    const games = await db
-      .query(
-        `
-            SELECT 
-              goals_team_house
-            FROM
-            games
-            WHERE
-              id = $1
-        `,
-        [id]
-      )
-      .then((q) => q.rows);
-
-    if (games.length > 0) {
-      return games[0];
-    }
-
-    throw new Error(`Games with goals team house with id='${id}' not found!`);
-  },
-
-  getGoalsTeamHouseById: async (id) => {
-    const games = await db
-      .query(
-        `
-            SELECT 
-              goals_team_house
-            FROM
-            games
-            WHERE
-              id = $1
-        `,
-        [id]
-      )
-      .then((q) => q.rows);
-
-    if (games.length > 0) {
-      return games[0];
-    }
-
-    throw new Error(`Games with goals team house with id='${id}' not found!`);
-  },
-
-  getGoalsTeamAwayById: async (id) => {
-    const games = await db
-      .query(
-        `
-            SELECT 
-              goals_team_away
-            FROM
-            games
-            WHERE
-              id = $1
-        `,
-        [id]
-      )
-      .then((q) => q.rows);
-
-    if (games.length > 0) {
-      return games[0];
-    }
-
-    throw new Error(`Games with goals team away with id='${id}' not found!`);
-  },
-
-  getWinConditionById: async (id) => {
-    const games = await db
-      .query(
-        `
-            SELECT 
-              win_conditions
-            FROM
-            games
-            WHERE
-              id = $1
-        `,
-        [id]
-      )
-      .then((q) => q.rows);
-
-    if (games.length > 0) {
-      return games[0];
-    }
-
-    throw new Error(`Games with win condition with id='${id}' not found!`);
-  },
-
-  getHalfTimeHomeGoalsById: async (id) => {
-    const games = await db
-      .query(
-        `
-            SELECT 
-              half_time_home_goals
-            FROM
-            games
-            WHERE
-              id = $1
-        `,
-        [id]
-      )
-      .then((q) => q.rows);
-
-    if (games.length > 0) {
-      return games[0];
-    }
-
-    throw new Error(
-      `Games with half time home goals with id='${id}' not found!`
-    );
-  },
-
-  getHalfTimeAwayGoalsById: async (id) => {
-    const games = await db
-      .query(
-        `
-            SELECT 
-              half_time_away_goals
-            FROM
-            games
-            WHERE
-              id = $1
-        `,
-        [id]
-      )
-      .then((q) => q.rows);
-
-    if (games.length > 0) {
-      return games[0];
-    }
-
-    throw new Error(
-      `Games with half time away goals with id='${id}' not found!`
-    );
-  },
-
-  getRefereeById: async (id) => {
-    const games = await db
-      .query(
-        `
-            SELECT 
-              referee
-            FROM
-            games
-            WHERE
-              id = $1
-        `,
-        [id]
-      )
-      .then((q) => q.rows);
-
-    if (games.length > 0) {
-      return games[0];
-    }
-
-    throw new Error(`Games with referee with id='${id}' not found!`);
-  },
-
   geAssistant1yId: async (id) => {
     const games = await db
       .query(
@@ -214,50 +56,6 @@ module.exports = {
     }
 
     throw new Error(`Games with assistant one with id='${id}' not found!`);
-  },
-
-  getAssistant2ById: async (id) => {
-    const games = await db
-      .query(
-        `
-            SELECT 
-              assistant_2
-            FROM
-            games
-            WHERE
-              id = $1
-        `,
-        [id]
-      )
-      .then((q) => q.rows);
-
-    if (games.length > 0) {
-      return games[0];
-    }
-
-    throw new Error(`Games with assistant two with id='${id}' not found!`);
-  },
-
-  getNumEspectatorsById: async (id) => {
-    const games = await db
-      .query(
-        `
-            SELECT 
-              num_espectators
-            FROM
-            games
-            WHERE
-              id = $1
-        `,
-        [id]
-      )
-      .then((q) => q.rows);
-
-    if (games.length > 0) {
-      return games[0];
-    }
-
-    throw new Error(`Games with num espectators with id='${id}' not found!`);
   },
 
   updatebyIDGames: async (
@@ -372,5 +170,47 @@ module.exports = {
     } catch (e) {
       throw new Error(e);
     }
+  },
+
+  insertgames: async ({
+    goals_team_house,
+    goals_team_away,
+    win_condition = "",
+    half_time_home_goals,
+    half_time_away_goals,
+    referee = "",
+    assistant_1 = "",
+    assistant_2 = "",
+    num_spectators,
+  }) => {
+    return db
+      .query(
+        `
+            INSERT INTO
+              games(goals_team_house,
+                goals_team_away,
+                win_condition,
+                half_time_home_goals,
+                half_time_away_goals,
+                referee,
+                assistant_1,
+                assistant_2,
+                num_spectators)
+            VALUES ($1, $2 ,$3, $4, $5, $6 ,$7, $8, $9)
+            RETURNING *
+        `,
+        [
+          goals_team_house,
+          goals_team_away,
+          win_condition,
+          half_time_home_goals,
+          half_time_away_goals,
+          referee,
+          assistant_1,
+          assistant_2,
+          num_spectators,
+        ]
+      )
+      .then((q) => q.rows);
   },
 };

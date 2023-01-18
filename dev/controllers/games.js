@@ -14,72 +14,9 @@ module.exports = {
     }
   },
 
-  getGoalsTeamHouseById: async (req, res) => {
-    try {
-      let games = await services.games.getGoalsTeamHouseById(req.params.id);
-      res.status(200).send(games);
-    } catch ({ message }) {
-      res.status(404).send({ error: message });
-    }
-  },
-
-  getGoalsTeamAwayById: async (req, res) => {
-    try {
-      let games = await services.games.getGoalsTeamAwayById(req.params.id);
-      res.status(200).send(games);
-    } catch ({ message }) {
-      res.status(404).send({ error: message });
-    }
-  },
-
-  getWinConditionById: async (req, res) => {
-    try {
-      let games = await services.games.getWinConditionById(req.params.id);
-      res.status(200).send(games);
-    } catch ({ message }) {
-      res.status(404).send({ error: message });
-    }
-  },
-
-  getHalfTimeHomeGoalsById: async (req, res) => {
-    try {
-      let games = await services.games.getHalfTimeHomeGoalsById(req.params.id);
-      res.status(200).send(games);
-    } catch ({ message }) {
-      res.status(404).send({ error: message });
-    }
-  },
-
-  getHalfTimeAwayGoalsById: async (req, res) => {
-    try {
-      let games = await services.games.getHalfTimeAwayGoalsById(req.params.id);
-      res.status(200).send(games);
-    } catch ({ message }) {
-      res.status(404).send({ error: message });
-    }
-  },
-
-  getRefereeById: async (req, res) => {
-    try {
-      let games = await services.games.getRefereeById(req.params.id);
-      res.status(200).send(games);
-    } catch ({ message }) {
-      res.status(404).send({ error: message });
-    }
-  },
-
   getAssistant1Byid: async (req, res) => {
     try {
       let games = await services.games.getAssistant1Byid(req.params.id);
-      res.status(200).send(games);
-    } catch ({ message }) {
-      res.status(404).send({ error: message });
-    }
-  },
-
-  getAssistant2ById: async (req, res) => {
-    try {
-      let games = await services.games.getAssistant2ById(req.params.id);
       res.status(200).send(games);
     } catch ({ message }) {
       res.status(404).send({ error: message });
@@ -136,6 +73,40 @@ module.exports = {
         success: false,
         message: error.message,
       });
+    }
+  },
+
+  insertgames: async (req, res) => {
+    try {
+      const {
+        id,
+        goals_team_house,
+        goals_team_away,
+        win_condition,
+        half_time_home_goals,
+        half_time_away_goals,
+        referee,
+        assistant_1,
+        assistant_2,
+        num_spectators,
+      } = req.body;
+
+      res.status(201).send(
+        await services.games.insertgames({
+          id,
+          goals_team_house,
+          goals_team_away,
+          win_condition,
+          half_time_home_goals,
+          half_time_away_goals,
+          referee,
+          assistant_1,
+          assistant_2,
+          num_spectators,
+        })
+      );
+    } catch ({ message }) {
+      res.status(400).send({ error: message });
     }
   },
 };

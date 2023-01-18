@@ -36,28 +36,6 @@ module.exports = {
     throw new Error(`Competitions with id='${id}' not found!`);
   },
 
-  getStagesById: async (id) => {
-    const competitions = await db
-      .query(
-        `
-            SELECT 
-              stage
-            FROM
-            competitions
-            WHERE
-              id = $1
-        `,
-        [id]
-      )
-      .then((q) => q.rows);
-
-    if (competitions.length > 0) {
-      return competitions[0];
-    }
-
-    throw new Error(`Competitions Stage with id='${id}' not found!`);
-  },
-
   updatebyIDCompetitions: async (id, year, stage) => {
     let competitions;
 
@@ -118,6 +96,20 @@ module.exports = {
     } catch (e) {
       throw new Error(e);
     }
+  },
+
+  insertcompetitions: async ({ year, stage = "" }) => {
+    return db
+      .query(
+        `
+            INSERT INTO
+              competitions(year, stage)
+            VALUES ($1, $2)
+            RETURNING *
+        `,
+        [year, stage]
+      )
+      .then((q) => q.rows);
   },
 };
 

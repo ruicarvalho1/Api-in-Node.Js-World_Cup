@@ -16,15 +16,6 @@ module.exports = {
     }
   },
 
-  getCityById: async (req, res) => {
-    try {
-      let stadiums = await services.stadiums.getCityById(req.params.id);
-      res.status(200).send(stadiums);
-    } catch ({ message }) {
-      res.status(404).send({ error: message });
-    }
-  },
-
   getNameById: async (req, res) => {
     try {
       let stadiums = await services.stadiums.getNameById(req.params.id);
@@ -70,6 +61,21 @@ module.exports = {
         success: false,
         message: error.message,
       });
+    }
+  },
+
+  insertstadiums: async (req, res) => {
+    try {
+      const { name, city } = req.body;
+
+      res.status(201).send(
+        await services.stadiums.insertstadiums({
+          name,
+          city,
+        })
+      );
+    } catch ({ message }) {
+      res.status(400).send({ error: message });
     }
   },
 };

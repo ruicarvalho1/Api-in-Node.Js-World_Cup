@@ -16,17 +16,6 @@ module.exports = {
     }
   },
 
-  getStagesById: async (req, res) => {
-    try {
-      let competition = await services.competitions.getStagesById(
-        req.params.id
-      );
-      res.status(200).send(competition);
-    } catch ({ message }) {
-      res.status(404).send({ error: message });
-    }
-  },
-
   updatebyIDCompetitions: async (req, res) => {
     try {
       const { id } = req.params;
@@ -61,6 +50,21 @@ module.exports = {
         success: false,
         message: error.message,
       });
+    }
+  },
+
+  insertcompetitions: async (req, res) => {
+    try {
+      const { year, stage } = req.body;
+
+      res.status(201).send(
+        await services.competitions.insertcompetitions({
+          year,
+          stage,
+        })
+      );
+    } catch ({ message }) {
+      res.status(400).send({ error: message });
     }
   },
 };

@@ -1,7 +1,10 @@
 const csv = require("csvtojson");
-const { Client } = require("pg");
+const fs = require("fs");
+const { Pool } = require("pg"); // use the 'pg' module to connect to the database
+const fastcsv = require("fast-csv");
 
-const pool = new Client({
+// Connection details for the PostgreSQL database
+const pool = new Pool({
   host: "127.0.0.1",
   user: "ipvc",
   database: "Data_Base_SD",
@@ -26,23 +29,34 @@ pool.connect();
     }
   }
 
-  competitions.forEach((competition) => {
-    //console.log(`INSERT INTO competitions (year) VALUES ${[competition]}`);
-    pool.query(
-      `INSERT INTO competitions (year) VALUES ${[competition]}`,
-      [competition],
-      (err, res) => {
-        if (err) {
-          console.error(err.stack);
-        } else {
-          console.log(
-            `Inserted ${res.rowCount} row for competitions ${competition}`
-          );
+  const promises = competitions.map((competition) => {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `INSERT INTO competitions year VALUES ${[competition]} RETURNING *`,
+        [competition],
+        (err, res) => {
+          if (err) {
+            console.error(err.stack);
+            reject(err);
+          } else {
+            console.log(
+              `Inserted ${res.rowCount} row for competitions ${competition}`
+            );
+            resolve();
+          }
         }
-      }
-    );
-    pool.end();
+      );
+    });
   });
 
-  //console.log(competitions);
+  Promise.all(promises)
+    .then(() => {
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+    });
+
+  console.log(competitions);
 })();

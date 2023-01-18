@@ -5,9 +5,12 @@
     "title": "WorldCup Game Handling API",
     "description": "This API aims to manipulate the WorldCup games\n\nGithub repository where the Swagger and API files are contained: [https://github.com/ruicarvalho1/Project_SD](https://github.com/ruicarvalho1/Project_SD)"
   },
-  "host": "api.example.com",
-  "basePath": "/v1",
-  "schemes": ["https"],
+
+  "servers": [
+    {
+      "url": "http://localhost:3001/api/v1"
+    }
+  ],
 
   "components": {
     "securitySchemes": {
@@ -187,66 +190,12 @@
             "schema": {
               "type": "integer"
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Competition not found"
-          },
-          "406": {
-            "description": "Not acceptable"
-          }
-        }
-      }
-    },
-    "/competition/{id}/stages": {
-      "get": {
-        "tags": ["Competition"],
-        "summary": "Find Stage Competition by ID",
-        "description": "Returns a single competition",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Competition not found"
-          },
-          "406": {
-            "description": "Not acceptable"
-          }
-        }
-      },
-
-      "put": {
-        "tags": ["Competition"],
-        "summary": "Update Competition Stage by ID",
-        "description": "Update a single Stages",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "id_competition",
-            "in": "path",
-            "description": "ID of Stages that needs to be updated",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
           },
           {
             "name": "stage",
             "in": "query",
+            "required": true,
+            "description": "The stage the game took place",
             "schema": {
               "type": "string"
             }
@@ -266,56 +215,25 @@
             "description": "Not acceptable"
           }
         }
-      },
-      "post": {
-        "tags": ["Competition"],
-        "summary": "Create Competition Stages by Id",
-        "description": "Create a single Stages",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "Stage",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "body"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Competition not found"
-          },
-          "406": {
-            "description": "Not acceptable"
-          }
-        }
       }
     },
-    "/competition/{id}": {
+    "/competitions/{id_competition}": {
       "get": {
         "tags": ["Competition"],
         "summary": "Find Competition by ID",
         "security": [{ "bearerAuth": [] }],
-        "description": "Returns a single competition",
         "parameters": [
           {
             "name": "id_competition",
             "in": "path",
-            "description": "ID of competition to return",
+            "description": "ID of pet to return",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "type": "integer",
+            "format": "int64"
           }
         ],
+        "required": true,
+        "description": "Returns a single competition",
         "responses": {
           "200": {
             "description": "successful operation"
@@ -380,13 +298,11 @@
             }
           },
           {
-            "name": "year",
-            "in": "query",
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
             "required": true,
-            "description": "Name of competition that needs to be updated",
-            "schema": {
-              "type": "integer"
-            }
+            "schema": { "$ref": "#/competitions" }
           }
         ],
         "responses": {
@@ -523,150 +439,6 @@
       }
     },
 
-    "/games/{id}/goals_team_house": {
-      "get": {
-        "tags": ["Games"],
-        "summary": "Retrives goals team house by id",
-        "security": [{ "bearerAuth": [] }],
-        "description": "Returns goals team house",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Games not found"
-          },
-          "406": {
-            "description": "Not acceptable"
-          }
-        }
-      }
-    },
-
-    "/games/{id}/goals_team_away": {
-      "get": {
-        "tags": ["Games"],
-        "summary": "Retrives goals team away by id",
-        "security": [{ "bearerAuth": [] }],
-        "description": "Returns goals team away",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Games not found"
-          },
-          "406": {
-            "description": "Not acceptable"
-          }
-        }
-      }
-    },
-
-    "/games/{id}/win_condition": {
-      "get": {
-        "tags": ["Games"],
-        "summary": "Retrives games with win condition by id",
-        "security": [{ "bearerAuth": [] }],
-        "description": "Returns win conditions",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Games not found"
-          },
-          "406": {
-            "description": "Not acceptable"
-          }
-        }
-      }
-    },
-
-    "/games/{id}/half_time_home_goals": {
-      "get": {
-        "tags": ["Games"],
-        "summary": "Retrives games with half time goals by id",
-        "security": [{ "bearerAuth": [] }],
-        "description": "Returns half time goals",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Games not found"
-          },
-          "406": {
-            "description": "Not acceptable"
-          }
-        }
-      }
-    },
-
-    "/games/{id}/half_time_away_goals": {
-      "get": {
-        "tags": ["Games"],
-        "summary": "Retrives games with half time away goals by id",
-        "security": [{ "bearerAuth": [] }],
-        "description": "Returns half time away goals",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Games not found"
-          },
-          "406": {
-            "description": "Not acceptable"
-          }
-        }
-      }
-    },
-
-    "/games/{id}/referee": {
-      "get": {
-        "tags": ["Games"],
-        "summary": "Retrives games with referee by id",
-        "security": [{ "bearerAuth": [] }],
-        "description": "Returns referee",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Games not found"
-          },
-          "406": {
-            "description": "Not acceptable"
-          }
-        }
-      }
-    },
-
     "/games/{id}/assistant_1": {
       "get": {
         "tags": ["Games"],
@@ -702,55 +474,7 @@
       }
     },
 
-    "/games/{id}/assistant_2": {
-      "get": {
-        "tags": ["Games"],
-        "summary": "Retrives games with assistant 2 by id",
-        "security": [{ "bearerAuth": [] }],
-        "description": "Returns assistant 2",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Games not found"
-          },
-          "406": {
-            "description": "Not acceptable"
-          }
-        }
-      }
-    },
-
-    "/games/{id}/num_espectator": {
-      "get": {
-        "tags": ["Games"],
-        "summary": "Retrives games with num espectators by id",
-        "security": [{ "bearerAuth": [] }],
-        "description": "Returns num espectators in a game",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Games not found"
-          },
-          "406": {
-            "description": "Not acceptable"
-          }
-        }
-      }
-    },
-
-    "/games/{id}": {
+    "/games/{id_games}": {
       "get": {
         "tags": ["Games"],
         "summary": "Find Games by ID",
@@ -912,7 +636,7 @@
       }
     },
 
-    "/stadiuns": {
+    "/stadiums": {
       "get": {
         "summary": "Retrieve a list of stadium",
         "description": "Returns a list of stadium that the authenticated user has access to",
@@ -994,31 +718,8 @@
         }
       }
     },
-    "/stadium/{id}/city": {
-      "get": {
-        "description": "Retrieves a city stadium by id",
-        "security": [{ "bearerAuth": [] }],
-        "summary": "Find Stadium by ID",
-        "tags": ["Stadium"],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Stadium not found"
-          },
-          "406": {
-            "description": "Not acceptable"
-          }
-        }
-      }
-    },
 
-    "/stadium/{id}": {
+    "/stadium/{id_stadium}": {
       "get": {
         "description": "Retrieves one stadium by id",
         "security": [{ "bearerAuth": [] }],
@@ -1175,29 +876,6 @@
         }
       }
     },
-    "/teams/{id}/name": {
-      "get": {
-        "description": "Retrieves one team name by id",
-        "security": [{ "bearerAuth": [] }],
-        "summary": "Find Teams by ID",
-        "tags": ["Teams"],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Teams not found"
-          },
-          "406": {
-            "description": "Not acceptable"
-          }
-        }
-      }
-    },
     "/teams/{id}/initials": {
       "get": {
         "description": "Retrieves one team initials by id",
@@ -1222,7 +900,7 @@
       }
     },
 
-    "/teams/{id}": {
+    "/teams/{id_teams}": {
       "get": {
         "description": "Retrieves one teams by id",
         "security": [{ "bearerAuth": [] }],
@@ -1327,5 +1005,14 @@
         }
       }
     }
+  },
+  "competitions": {
+    "type": "object",
+    "properties": {
+      "id": { "type": "integer", "format": "int64" },
+      "year": { "type": "integer" },
+      "stage": { "type": "string" }
+    },
+    "xml": { "name": "User" }
   }
 }

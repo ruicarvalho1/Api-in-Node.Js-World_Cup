@@ -33,13 +33,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
     cb: controllers.competitions.getById,
   },
   {
-    method: "get",
-    url: "competitions/:id/Stages",
-    cb: controllers.competitions.getStagesById,
-  },
-  {
     method: "put",
-    url: "competitions/:id/stages",
+    url: "competitions/:id",
     cb: controllers.competitions.updatebyIDCompetitions,
   },
 
@@ -49,6 +44,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
     cb: controllers.competitions.deletebyIDCompetitions,
   },
 
+  {
+    method: "post",
+    url: "competitions",
+    cb: controllers.competitions.insertcompetitions,
+  },
   //get all stadiums && getById Stadiums
   { method: "get", url: "stadiums", cb: controllers.stadiums.getAll },
   { method: "get", url: "stadiums/:id", cb: controllers.stadiums.getById },
@@ -57,11 +57,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
     url: "stadiums/:id/name",
     cb: controllers.stadiums.getNameById,
   },
-  {
-    method: "get",
-    url: "stadiums/:id/city",
-    cb: controllers.stadiums.getCityById,
-  },
+
   {
     method: "put",
     url: "stadiums/:id",
@@ -73,10 +69,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
     cb: controllers.stadiums.deletebyIDStadiums,
   },
 
+  {
+    method: "post",
+    url: "stadiums",
+    cb: controllers.stadiums.insertstadiums,
+  },
+
   //get all teams && getById teams
   { method: "get", url: "teams", cb: controllers.teams.getAll },
   { method: "get", url: "teams/:id", cb: controllers.teams.getById },
-  { method: "get", url: "teams/:id/name", cb: controllers.teams.getNameById },
   {
     method: "get",
     url: "teams/:id/initials",
@@ -94,6 +95,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
     cb: controllers.teams.deletebyIDTeams,
   },
 
+  {
+    method: "post",
+    url: "teams",
+    cb: controllers.teams.insertteams,
+  },
   //get all games && getById games
   { method: "get", url: "games", cb: controllers.games.getAll },
   { method: "get", url: "games/:id", cb: controllers.games.getById },
@@ -109,45 +115,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
     url: "games/:id",
     cb: controllers.games.deletebyIDGames,
   },
-  {
-    method: "get",
-    url: "games/:id/goals_team_house",
-    cb: controllers.games.getGoalsTeamHouseById,
-  },
-  {
-    method: "get",
-    url: "games/:id/goals_team_away",
-    cb: controllers.games.getGoalsTeamAwayById,
-  },
-  {
-    method: "get",
-    url: "games/:id/win_condition",
-    cb: controllers.games.getWinConditionById,
-  },
-  {
-    method: "get",
-    url: "games/:id/half_time_home_goals",
-    cb: controllers.games.getHalfTimeHomeGoalsById,
-  },
-  {
-    method: "get",
-    url: "games/:id/half_time_away_goals",
-    cb: controllers.games.getHalfTimeAwayGoalsById,
-  },
-  {
-    method: "get",
-    url: "games/:id/referee",
-    cb: controllers.games.getRefereeById,
-  },
+
   {
     method: "get",
     url: "games/:id/assistant_1",
     cb: controllers.games.getAssistant1Byid,
   },
+
   {
-    method: "get",
-    url: "games/:id/assistant_2",
-    cb: controllers.games.getAssistant2ById,
+    method: "post",
+    url: "games",
+    cb: controllers.games.insertgames,
   },
 ].forEach(({ method, url, cb }) => {
   app[method](apiUrl(url), cb);

@@ -138,4 +138,18 @@ module.exports = {
       throw new Error(e);
     }
   },
+  insertteams: async ({ name = "", initials = "" }) => {
+    return db
+      .query(
+        `
+            INSERT INTO
+              teams(name,
+                initials)
+            VALUES ($1, $2)
+            RETURNING *
+        `,
+        [name, initials]
+      )
+      .then((q) => q.rows);
+  },
 };

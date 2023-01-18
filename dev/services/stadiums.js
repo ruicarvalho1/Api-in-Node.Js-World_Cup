@@ -137,4 +137,19 @@ module.exports = {
       throw new Error(e);
     }
   },
+
+  insertstadiums: async ({ name = "", city = "" }) => {
+    return db
+      .query(
+        `
+            INSERT INTO
+              stadiums(name,
+                city)
+            VALUES ($1, $2)
+            RETURNING *
+        `,
+        [name, city]
+      )
+      .then((q) => q.rows);
+  },
 };
