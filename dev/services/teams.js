@@ -82,33 +82,30 @@ module.exports = {
 
   updatebyIDTeams: async (id, name, initials) => {
     let teams;
+    const fieldsToUpdate = {
+      name: name,
+      initials: initials,
+    };
 
     try {
-      teams = await db.query(
-        `SELECT 
-        * 
-      FROM
-      teams
-      WHERE
-        id = $1`,
-        [id]
-      );
-      if (teams.rows.length > 0) {
-        let oldname = teams.rows[0].name;
-        let oldInitials = teams.rows[0].initials;
+      let updates = [];
+      let count = 2;
+      let values = [id];
 
-        if (name != oldname && name != null) {
-          const updateName = `UPDATE teams SET name = $1  WHERE id = $2`;
-          await db.query(updateName, [name, id]);
-        } else if (initials != oldInitials && initials != null) {
-          const updateInitials = `UPDATE teams SET initials = $1  WHERE id = $2`;
-          await db.query(updateInitials, [initials, id]);
+      for (let [key, value] of Object.entries(fieldsToUpdate)) {
+        if (typeof value !== "undefined" && value !== null) {
+          values.push(value);
+          updates.push(`${key} = $${count++}`);
         }
-        console.log(`Teams with id '${id} was updated successfully`);
-        teams = await db.query(`SELECT * FROM teams WHERE id = $1`, [id]);
-      } else {
-        throw new Error(`Teams with id='${id}' not found!`);
       }
+      if (updates.length == 0) {
+        throw new Error("No values to update");
+      }
+      const query = `UPDATE teams SET ${updates.join(
+        ", "
+      )} WHERE id = $1  RETURNING *`;
+      teams = await db.query(query, values);
+      console.log(`Teams with id '${id} was updated successfully`);
     } catch (e) {
       throw new Error(e);
     }

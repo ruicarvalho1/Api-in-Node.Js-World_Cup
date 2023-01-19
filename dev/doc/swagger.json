@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.0",
+  "swagger": "2.0",
   "info": {
     "version": "1.0",
     "title": "WorldCup Game Handling API",
@@ -183,22 +183,11 @@
         "description": "Create a single competition",
         "parameters": [
           {
-            "name": "year",
-            "in": "query",
+            "in": "body",
+            "name": "body",
+            "description": "Create Competition object",
             "required": true,
-            "description": "The year the game took place",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "stage",
-            "in": "query",
-            "required": true,
-            "description": "The stage the game took place",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "$ref": "#/competitions" }
           }
         ],
         "responses": {
@@ -300,20 +289,9 @@
           {
             "in": "body",
             "name": "body",
+            "description": "Updated user object",
             "required": true,
-            "content": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "year": {
-                    "type": "number"
-                  },
-                  "stage": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
+            "schema": { "$ref": "#/competitions" }
           }
         ],
         "responses": {
@@ -361,76 +339,11 @@
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
-            "name": "goals_team_house",
-            "in": "query",
+            "in": "body",
+            "name": "body",
+            "description": "Create Games object",
             "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "goals_team_away",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "win_condition",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "body"
-            }
-          },
-          {
-            "name": "half_time_home_goals",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "body"
-            }
-          },
-          {
-            "name": "half_time_away_goals",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "body"
-            }
-          },
-          {
-            "name": "referee",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "body"
-            }
-          },
-          {
-            "name": "assistant_1",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "body"
-            }
-          },
-          {
-            "name": "assistant_2",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "body"
-            }
-          },
-          {
-            "name": "num_spectators",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
+            "schema": { "$ref": "#/games" }
           }
         ],
         "responses": {
@@ -567,67 +480,11 @@
             }
           },
           {
-            "name": "goals_team_house",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "goals_team_away",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "win_condition",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "half_time_home_goals",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "half_time_away_goals",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "referee",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "assistant_1",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "assistant_2",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "num_spectators",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": { "$ref": "#/games" }
           }
         ],
         "responses": {
@@ -682,12 +539,11 @@
         "summary": "Create Stadium by ID",
         "parameters": [
           {
-            "name": "Stadium",
-            "in": "query",
+            "in": "body",
+            "name": "body",
+            "description": "Create user object",
             "required": true,
-            "schema": {
-              "type": "body"
-            }
+            "schema": { "$ref": "#/stadiums" }
           }
         ],
         "responses": {
@@ -730,7 +586,7 @@
       }
     },
 
-    "/stadium/{id_stadium}": {
+    "/stadiums/{id_stadium}": {
       "get": {
         "description": "Retrieves one stadium by id",
         "security": [{ "bearerAuth": [] }],
@@ -802,7 +658,7 @@
           {
             "name": "id_stadium",
             "in": "path",
-            "description": "ID of Stadium that needs to be updated",
+            "description": "ID of Stadiums that needs to be updated",
             "required": true,
             "schema": {
               "type": "integer",
@@ -810,11 +666,11 @@
             }
           },
           {
-            "name": "stadium",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": { "$ref": "#/stadiums" }
           }
         ],
         "responses": {
@@ -863,12 +719,11 @@
         "tags": ["Teams"],
         "parameters": [
           {
-            "name": "Teams",
-            "in": "query",
+            "in": "body",
+            "name": "body",
+            "description": "Create user object",
             "required": true,
-            "schema": {
-              "type": "body"
-            }
+            "schema": { "$ref": "#/teams" }
           }
         ],
         "responses": {
@@ -994,11 +849,11 @@
             }
           },
           {
-            "name": "teams",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            "in": "body",
+            "name": "body",
+            "description": "Updated teams object",
+            "required": true,
+            "schema": { "$ref": "#/teams" }
           }
         ],
         "responses": {
@@ -1015,6 +870,44 @@
           }
         }
       }
+    }
+  },
+  "competitions": {
+    "type": "object",
+    "properties": {
+      "year": { "type": "integer" },
+      "stage": { "type": "string" }
+    }
+  },
+  "teams": {
+    "type": "object",
+    "properties": {
+      "name": { "type": "string" },
+      "initials": { "type": "string" }
+    }
+  },
+  "stadiums": {
+    "type": "object",
+    "properties": {
+      "name": { "type": "string" },
+      "city": { "type": "string" }
+    }
+  },
+  "games": {
+    "type": "object",
+    "properties": {
+      "goals_team_house": { "type": "integer" },
+      "goals_team_away": { "type": "integer" },
+      "half_time_home_goals": { "type": "integer" },
+      "half_time_away_goals": { "type": "integer" },
+      "win_condition": { "type": "string" },
+      "referee": { "type": "string" },
+      "assistant_1": { "type": "string" },
+      "assistant_2": { "type": "string" },
+      "num_spectators": { "type": "integer" },
+      "id_stadium": { "type": "integer" },
+      "id_team_home": { "type": "integer" },
+      "id_team_away": { "type": "integer" }
     }
   }
 }

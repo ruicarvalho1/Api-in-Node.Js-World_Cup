@@ -71,77 +71,37 @@ module.exports = {
     num_spectators
   ) => {
     let games;
+    const fieldsToUpdate = {
+      goals_team_house: goals_team_house,
+      goals_team_away: goals_team_away,
+      win_condition: win_condition,
+      half_time_home_goals: half_time_home_goals,
+      half_time_away_goals: half_time_away_goals,
+      referee: referee,
+      assistant_1: assistant_1,
+      assistant_2: assistant_2,
+      num_spectators: num_spectators,
+    };
 
     try {
-      games = await db.query(
-        `SELECT 
-        * 
-      FROM
-        games
-      WHERE
-        id = $1`,
-        [id]
-      );
-      if (games.rows.length > 0) {
-        let oldGoalsTeamHouse = games.rows[0].goals_team_house;
-        let oldGoalsTeamAway = games.rows[0].goals_team_away;
-        let oldWinCodition = games.rows[0].win_condition;
-        let oldHalfTimeHomeGoals = games.rows[0].half_time_home_goals;
-        let oldHalfTimeAwayGoals = games.rows[0].half_time_away_goals;
-        let oldReferee = games.rows[0].referee;
-        let oldAssistant1 = games.rows[0].assistant_1;
-        let oldAssistant2 = games.rows[0].assistant_2;
-        let oldNumEspectator = games.rows[0].num_spectators;
+      let updates = [];
+      let count = 2;
+      let values = [id];
 
-        if (goals_team_house != oldGoalsTeamHouse && goals_team_house != null) {
-          const updateGoalsTeamHouse = `UPDATE games SET goals_team_house = $1  WHERE id = $2`;
-          await db.query(updateGoalsTeamHouse, [goals_team_house, id]);
-        } else if (
-          goals_team_away != oldGoalsTeamAway &&
-          goals_team_away != null
-        ) {
-          const updateGoalsTeamAway = `UPDATE games SET goals_team_away = $1  WHERE id = $2`;
-          await db.query(updateGoalsTeamAway, [goals_team_away, id]);
-        } else if (win_condition != oldWinCodition && win_condition != null) {
-          const updateWinCondition = `UPDATE games SET win_condition = $1  WHERE id = $2`;
-
-          await db.query(updateWinCondition, [win_condition, id]);
-        } else if (
-          half_time_home_goals != oldHalfTimeHomeGoals &&
-          half_time_home_goals != null
-        ) {
-          const updateHalfTimeHomeGoals = `UPDATE games SET half_time_home_goals = $1  WHERE id = $2`;
-
-          await db.query(updateHalfTimeHomeGoals, [half_time_home_goals, id]);
-        } else if (
-          half_time_away_goals != oldHalfTimeAwayGoals &&
-          half_time_away_goals != null
-        ) {
-          const updateHalfTimeAwayGoals = `UPDATE games SET half_time_away_goals = $1  WHERE id = $2`;
-
-          await db.query(updateHalfTimeAwayGoals, [half_time_away_goals, id]);
-        } else if (referee != oldReferee && referee != null) {
-          const updateReferee = `UPDATE games SET referee = $1  WHERE id = $2`;
-          await db.query(updateReferee, [referee, id]);
-        } else if (assistant_1 != oldAssistant1 && assistant_1 != null) {
-          const updateAssistant1 = `UPDATE games SET assistant_1 = $1  WHERE id = $2`;
-          await db.query(updateAssistant1, [assistant_1, id]);
-        } else if (assistant_2 != oldAssistant2 && assistant_2 != null) {
-          const updateAssistant2 = `UPDATE games SET assistant_2 = $1  WHERE id = $2`;
-          await db.query(updateAssistant2, [assistant_2, id]);
-        } else if (
-          num_spectators != oldNumEspectator &&
-          num_spectators != null
-        ) {
-          const updateNumEspectator = `UPDATE games SET num_espectator = $1  WHERE id = $2`;
-          await db.query(updateNumEspectator, [num_spectators, id]);
+      for (let [key, value] of Object.entries(fieldsToUpdate)) {
+        if (typeof value !== "undefined" && value !== null) {
+          values.push(value);
+          updates.push(`${key} = $${count++}`);
         }
-
-        console.log(`Games with id '${id} was updated successfully`);
-        games = await db.query(`SELECT * FROM games WHERE id = $1`, [id]);
-      } else {
-        throw new Error(`Games with id='${id}' not found!`);
       }
+      if (updates.length == 0) {
+        throw new Error("No values to update");
+      }
+      const query = `UPDATE games SET ${updates.join(
+        ", "
+      )} WHERE id = $1  RETURNING *`;
+      games = await db.query(query, values);
+      console.log(`Games with id '${id} was updated successfully`);
     } catch (e) {
       throw new Error(e);
     }
