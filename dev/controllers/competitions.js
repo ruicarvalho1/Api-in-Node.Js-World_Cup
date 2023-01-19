@@ -19,8 +19,7 @@ module.exports = {
   updatebyIDCompetitions: async (req, res) => {
     try {
       const { id } = req.params;
-      const { year } = req.body;
-      const { stage } = req.body;
+      const { year, stage } = req.body;
 
       const updatedCompetition =
         await services.competitions.updatebyIDCompetitions(id, year, stage);

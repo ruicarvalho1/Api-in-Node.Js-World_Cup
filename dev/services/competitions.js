@@ -38,36 +38,30 @@ module.exports = {
 
   updatebyIDCompetitions: async (id, year, stage) => {
     let competitions;
+    const fieldsToUpdate = {
+      year: year,
+      stage: stage,
+    };
 
     try {
-      competitions = await db.query(
-        `SELECT 
-        * 
-      FROM
-      competitions
-      WHERE
-        id = $1`,
-        [id]
-      );
-      if (competitions.rows.length > 0) {
-        let oldyear = competitions.rows[0].year;
-        let oldstage = competitions.rows[0].stage;
+      let updates = [];
+      let count = 2;
+      let values = [id];
 
-        if (year != oldyear && year != null) {
-          const updateyear = `UPDATE competitions SET year = $1  WHERE id = $2`;
-          await db.query(updateyear, [year, id]);
-        } else if (stage != oldstage && stage != null) {
-          const updatestage = `UPDATE competitions SET stage = $1  WHERE id = $2`;
-          await db.query(updatestage, [stage, id]);
+      for (let [key, value] of Object.entries(fieldsToUpdate)) {
+        if (typeof value !== "undefined" && value !== null) {
+          values.push(value);
+          updates.push(`${key} = $${count++}`);
         }
-        console.log(`Competitions with id '${id} was updated successfully`);
-        competitions = await db.query(
-          `SELECT * FROM competitions WHERE id = $1`,
-          [id]
-        );
-      } else {
-        throw new Error(`competitions with id='${id}' not found!`);
       }
+      if (updates.length == 0) {
+        throw new Error("No values to update");
+      }
+      const query = `UPDATE competitions SET ${updates.join(
+        ", "
+      )} WHERE id = $1  RETURNING *`;
+      competitions = await db.query(query, values);
+      console.log(`Competitions with id '${id} was updated successfully`);
     } catch (e) {
       throw new Error(e);
     }

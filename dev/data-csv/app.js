@@ -30,9 +30,12 @@ pool.connect();
   }
 
   const promises = competitions.map((competition) => {
+    console.log(
+      `INSERT INTO competitions (year) VALUES ${[competition]} RETURNING *`
+    );
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO competitions year VALUES ${[competition]} RETURNING *`,
+        `INSERT INTO competitions (year) VALUES ${[competition]}RETURNING *`,
         [competition],
         (err, res) => {
           if (err) {

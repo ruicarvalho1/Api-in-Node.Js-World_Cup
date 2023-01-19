@@ -300,9 +300,20 @@
           {
             "in": "body",
             "name": "body",
-            "description": "Updated user object",
             "required": true,
-            "schema": { "$ref": "#/competitions" }
+            "content": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "type": "number"
+                  },
+                  "stage": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -1005,14 +1016,5 @@
         }
       }
     }
-  },
-  "competitions": {
-    "type": "object",
-    "properties": {
-      "id": { "type": "integer", "format": "int64" },
-      "year": { "type": "integer" },
-      "stage": { "type": "string" }
-    },
-    "xml": { "name": "User" }
   }
 }
