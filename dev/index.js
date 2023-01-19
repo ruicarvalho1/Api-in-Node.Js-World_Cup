@@ -119,9 +119,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
   {
     method: "get",
     url: "games/:id/assistant_1",
-    cb: controllers.games.getAssistant1Byid,
+    cb: controllers.games.getAssistant1ById,
   },
-
   {
     method: "post",
     url: "games",

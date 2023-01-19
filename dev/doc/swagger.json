@@ -363,7 +363,7 @@
       }
     },
 
-    "/games/{id}/assistant_1": {
+    "/games/{id_games}/assistant_1": {
       "get": {
         "tags": ["Games"],
         "summary": "Retrives games with assistant 1 by id",
@@ -562,13 +562,24 @@
         }
       }
     },
-    "/stadium/{id}/name": {
+    "/stadiums/{id_stadium}/name": {
       "get": {
         "description": "Retrieves Stadium name by id",
         "security": [{ "bearerAuth": [] }],
         "summary": "Find Stadium name by ID",
         "tags": ["Stadium"],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id_stadium",
+            "in": "path",
+            "description": "ID of Games to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation"
@@ -742,13 +753,24 @@
         }
       }
     },
-    "/teams/{id}/initials": {
+    "/teams/{id_teams}/initials": {
       "get": {
         "description": "Retrieves one team initials by id",
         "security": [{ "bearerAuth": [] }],
         "summary": "Find Teams by ID",
         "tags": ["Teams"],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id_teams",
+            "in": "path",
+            "description": "ID of Games to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation"

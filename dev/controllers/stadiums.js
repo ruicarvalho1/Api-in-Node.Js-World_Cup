@@ -24,6 +24,15 @@ module.exports = {
       res.status(404).send({ error: message });
     }
   },
+  getNameById: async (req, res) => {
+    try {
+      let stadiums = await services.stadiums.getById(req.params.id);
+      let name = stadiums.name;
+      res.status(200).send({ name });
+    } catch ({ message }) {
+      res.status(404).send({ error: message });
+    }
+  },
 
   updatebyIDStadiums: async (req, res) => {
     try {

@@ -23,6 +23,16 @@ module.exports = {
     }
   },
 
+  getAssistant1ById: async (req, res) => {
+    try {
+      let game = await services.games.getById(req.params.id);
+      let assistant_1 = game.assistant_1;
+      res.status(200).send({ assistant_1 });
+    } catch ({ message }) {
+      res.status(404).send({ error: message });
+    }
+  },
+
   updatebyIDGames: async (req, res) => {
     try {
       const { id } = req.params;

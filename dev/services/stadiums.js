@@ -80,6 +80,28 @@ module.exports = {
     throw new Error(`Stadiums city with id='${id}' not found!`);
   },
 
+  getNameById: async (id) => {
+    const stadiums = await db
+      .query(
+        `
+            SELECT 
+              name 
+            FROM
+            stadiums
+            WHERE
+              id = $1
+        `,
+        [id]
+      )
+      .then((q) => q.rows);
+
+    if (stadiums.length > 0) {
+      return stadiums[0];
+    }
+
+    throw new Error(`Stadiums name with id='${id}' not found!`);
+  },
+
   updatebyIDStadiums: async (id, name, city) => {
     let stadiums;
     const fieldsToUpdate = {

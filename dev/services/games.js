@@ -58,6 +58,28 @@ module.exports = {
     throw new Error(`Games with assistant one with id='${id}' not found!`);
   },
 
+  getAssistant1yId: async (id) => {
+    const games = await db
+      .query(
+        `
+            SELECT 
+              assistant_1
+            FROM
+            games
+            WHERE
+              id = $1
+        `,
+        [id]
+      )
+      .then((q) => q.rows);
+
+    if (games.length > 0) {
+      return games[0];
+    }
+
+    throw new Error(`Games with assistant one with id='${id}' not found!`);
+  },
+
   updatebyIDGames: async (
     id,
     goals_team_house,
