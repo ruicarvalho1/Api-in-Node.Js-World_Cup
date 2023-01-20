@@ -21,7 +21,7 @@ app.use(cors({ credentials: true, origin: true }));
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerConfig));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-function inspectRoles(requiredRole) {
+function inspectRoles(Role) {
   const score = {
     viewers: 1,
     editor: 2,
@@ -29,14 +29,14 @@ function inspectRoles(requiredRole) {
   };
 
   return (req, res, next) => {
-    if (!requiredRole) {
+    if (!Role) {
       return next();
     }
     const userRole = req.headers.score;
     if (!userRole) {
       return res.status(401).send("Não autorizado");
     }
-    if (score[userRole] >= score[requiredRole]) {
+    if (score[userRole] >= score[Role]) {
       return next();
     }
     res.status(401).send("Não autorizado");
@@ -164,8 +164,8 @@ function inspectRoles(requiredRole) {
     url: "games",
     cb: controllers.games.insertgames,
   },
-].forEach(({ method, url, cb }) => {
-  app[method](apiUrl(url), cb);
+].forEach(({ method, url, Role, cb }) => {
+  app[method](apiUrl(url), inspectRoles(Role), cb);
 });
 
 app.listen(config.port, () => {

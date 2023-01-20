@@ -59,13 +59,13 @@ module.exports = {
 
   insertusers: async (req, res) => {
     try {
-      const { username, password, roles } = req.body;
+      const { username, password, role } = req.body;
 
       res.status(201).send(
         await services.users.insertusers({
           username,
           password,
-          roles,
+          role,
         })
       );
     } catch ({ message }) {
