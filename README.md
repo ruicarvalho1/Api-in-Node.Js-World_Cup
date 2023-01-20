@@ -1,67 +1,101 @@
-# Systems Integration Development Kit
+# API
 
-### Introduction
+## _Serviços Distribuídos_
 
-This environment allows you to easily install the development environment and its dependencies.
-This is to be used for the 1st project in Systems Integration course from Informatics Engineering at IPVC/ESTG.
+Api REST escrita em Node.js com todos os endpoints da API com validações.
+Uma base de dados em PostgreSQL.
+Testes da API atraves da tecnologia Swagger.
 
-### How to I setup my development environment?
+## Installation
 
-- Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- Create the necessary Docker Images and Containers by running the following command in the project's root folder:
+Api REST requires [Node.js](https://nodejs.org/) v10+ to run.
+
+```sh
+npm i
+npm i express
+npm i cors
+npm i dotenv
+npm i swagger-ui-express
+npm i pg-pool
+```
+
+Create a file with name "docker-compose.yml". NOTE: Change both volumes for your correct directory
+
+```sh
+version: "3.8"
+services:
+  db:
+    image: postgres
+    container_name: local_pgdb
+    restart: always
+    ports:
+      - "54320:5432"
+    environment:
+      POSTGRES_USER: ipvc
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - local_pgdata:/c/Users/Nelson Freitas/Desktop/Project_SD-main/docker/volumes/postgres
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ipvc@ipvc.pt
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin-data:/c/Users/Nelson Freitas/Desktop/Project_SD-main/docker/volumes/postgres
+
+volumes:
+  local_pgdata:
+  pgadmin-data:
 
 ```
+
+After creating the file run the follow command to start the container:
+
+```sh
 docker-compose up --build -d
 ```
 
-- Once your are done working in the assignment, you can remove everything by running:
+If you want to shut down the container run the follow command:
 
-```
+```sh
 docker-compose down
 ```
 
-- **NOTE:** once you run the command above, the data in the database will be reset. Consider stopping the container instead, if you want to keep the data.
+## Start Server
 
-```
-# stops all the containers
-docker-compose stop
+You need to to start the server if you want to test de API in Swagger
+To start i will show you the commands you have to run in the terminal.
 
-# restarts all the containers
-docker-compose start
-```
-
-### Available Resources
-
-#### PostgreSQL Database
-
-- Available at localhost:5432
-  - **username**: is
-  - **password**: is
-  - **database**: is
-
-#### Python Dev Environment
-
-- Python 3.9.15
-- You can add pre-installed packages to the **_requirements.txt_** file. Remember that if you add any dependency, you will have to build the Docker images again.
-- You can easily use this python environment by opening up a terminal with the following command.
-
-```
-docker-compose run dev /bin/bash
+```sh
+cd sd
+cd dev
+nodemon index.js
 ```
 
-- You can also run directly a Python script as follows.
+To see if the API is running correctly it should appear in the terminal "api is listening on port 3001!"
 
+## Insert data into database
+
+You need to insert the csv data into database to test it in Swagger and below will have the commands to do it in the terminal
+
+```sh
+cd sd
+cd dev
+cd data-csv
+nodemon app.js
 ```
-docker-compose run --rm dev python db-access/main.py
+
+## Enter in Swagger
+
+To test the API with Swagger you need to put in the search bar of your browser the link below
+
+```sh
+http://localhost:3001/doc/
 ```
 
-- Every time you use the command **_docker-compose run_**, a new unnamed container will be created. The **_--rm flag_** will automatically remove the created container once the run is over.
-- For the XMLRPC server, you can run it in watch mode. This means that any time you edit the source code, the server will be automatically reloaded.
-
-```
-docker-compose run --rm dev pymon rpc-server/main.py
-```
-
----
-
-#### _Informatics Engineering @ipvc/estg, 2022-2023_
+## Trabalho realizado por: Rui Carvalho e Nelson Freitas
