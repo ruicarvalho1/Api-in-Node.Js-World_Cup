@@ -164,6 +164,10 @@ module.exports = {
     assistant_1 = "",
     assistant_2 = "",
     num_spectators,
+    id_competitions,
+    id_stadium,
+    id_team_home,
+    id_team_away,
   }) => {
     return db
       .query(
@@ -177,9 +181,17 @@ module.exports = {
                 referee,
                 assistant_1,
                 assistant_2,
-                num_spectators)
-            VALUES ($1, $2 ,$3, $4, $5, $6 ,$7, $8, $9)
-            RETURNING *
+                num_spectators, id_competitions,id_stadium ,id_team_home, id_team_away)
+            VALUES ($1, $2 ,$3, $4, $5, $6 ,$7, $8, $9,(SELECT competitions.id
+              FROM games INNER JOIN competitions 
+              ON (games.id_competitions = competitions.id)),(SELECT stadiums.id
+              FROM games INNER JOIN stadiums 
+              ON (games.id_stadium = stadiums.id)), (SELECT teams.id 
+                FROM games INNER JOIN teams 
+                ON (games.id_team_home = teams.id)), (SELECT teams.id
+                  FROM games INNER JOIN teams 
+                  ON (games.id_team_away = teams.id)))
+            RETURNING *       
         `,
         [
           goals_team_house,
@@ -191,6 +203,10 @@ module.exports = {
           assistant_1,
           assistant_2,
           num_spectators,
+          id_competitions,
+          id_stadium,
+          id_team_home,
+          id_team_away,
         ]
       )
       .then((q) => q.rows);

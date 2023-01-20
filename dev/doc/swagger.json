@@ -40,7 +40,60 @@
         }
       }
     },
+    "/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Get users All",
+        "security": [{ "bearerAuth": [] }],
+        "description": "",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Login user object",
+            "required": true,
+            "schema": { "$ref": "#/userslogin" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "406": {
+            "description": "Not acceptable"
+          }
+        }
+      }
+    },
     "/users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get users All",
+        "security": [{ "bearerAuth": [] }],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "406": {
+            "description": "Not acceptable"
+          }
+        }
+      },
+
       "post": {
         "tags": ["Users"],
         "security": [{ "bearerAuth": [] }],
@@ -49,7 +102,15 @@
         "requestBody": {
           "description": "Created user object"
         },
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Create user object",
+            "required": true,
+            "schema": { "$ref": "#/userspost" }
+          }
+        ],
         "responses": {
           "default": {
             "description": "successful operation"
@@ -66,21 +127,12 @@
         "description": "",
         "parameters": [
           {
-            "name": "id_user",
+            "name": "id",
             "in": "path",
             "description": "The name that needs to be fetched. Use user1 for testing. ",
             "required": true,
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "roles",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": ["admin", "editor", "viewer"]
             }
           }
         ],
@@ -101,26 +153,40 @@
       },
       "put": {
         "tags": ["Users"],
-        "summary": "Update user",
+        "summary": "Update Users by ID",
         "security": [{ "bearerAuth": [] }],
-        "description": "This can only be done by the logged in user.",
+        "description": "Update a single competition",
         "parameters": [
           {
-            "name": "username",
+            "name": "id",
             "in": "path",
-            "description": "name that need to be deleted",
+            "description": "ID of Users that needs to be updated",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int64"
             }
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": { "$ref": "#/userspost" }
           }
         ],
-        "requestBody": {
-          "description": "Update an existent user in the store"
-        },
         "responses": {
-          "default": {
+          "200": {
             "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Competition not found"
+          },
+          "406": {
+            "description": "Not acceptable"
           }
         }
       },
@@ -131,12 +197,13 @@
         "description": "This can only be done by the logged in user.",
         "parameters": [
           {
-            "name": "username",
+            "name": "id",
             "in": "path",
-            "description": "The name that needs to be deleted",
+            "description": "ID of Users that needs to be Delete",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int64"
             }
           }
         ],
@@ -206,14 +273,14 @@
         }
       }
     },
-    "/competitions/{id_competition}": {
+    "/competitions/{id}": {
       "get": {
         "tags": ["Competition"],
         "summary": "Find Competition by ID",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
-            "name": "id_competition",
+            "name": "id",
             "in": "path",
             "description": "ID of pet to return",
             "required": true,
@@ -245,7 +312,7 @@
         "description": "Delete a single competition",
         "parameters": [
           {
-            "name": "id_competition",
+            "name": "id",
             "in": "path",
             "description": "ID of competition to return",
             "required": true,
@@ -277,7 +344,7 @@
         "description": "Update a single competition",
         "parameters": [
           {
-            "name": "id_competition",
+            "name": "id",
             "in": "path",
             "description": "ID of competition that needs to be updated",
             "required": true,
@@ -363,7 +430,7 @@
       }
     },
 
-    "/games/{id_games}/assistant_1": {
+    "/games/{id}/assistant_1": {
       "get": {
         "tags": ["Games"],
         "summary": "Retrives games with assistant 1 by id",
@@ -371,7 +438,7 @@
         "description": "Returns assistant 1",
         "parameters": [
           {
-            "name": "id_games",
+            "name": "id",
             "in": "path",
             "description": "ID of Games to return",
             "required": true,
@@ -398,7 +465,7 @@
       }
     },
 
-    "/games/{id_games}": {
+    "/games/{id}": {
       "get": {
         "tags": ["Games"],
         "summary": "Find Games by ID",
@@ -406,7 +473,7 @@
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
-            "name": "id_games",
+            "name": "id",
             "in": "path",
             "description": "ID of Games to return",
             "required": true,
@@ -438,7 +505,7 @@
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
-            "name": "id_games",
+            "name": "id",
             "in": "path",
             "description": "ID of Games to return",
             "required": true,
@@ -470,7 +537,7 @@
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
-            "name": "id_games",
+            "name": "id",
             "in": "path",
             "description": "ID of Games that needs to be updated",
             "required": true,
@@ -562,7 +629,7 @@
         }
       }
     },
-    "/stadiums/{id_stadium}/name": {
+    "/stadiums/{id}/name": {
       "get": {
         "description": "Retrieves Stadium name by id",
         "security": [{ "bearerAuth": [] }],
@@ -570,7 +637,7 @@
         "tags": ["Stadium"],
         "parameters": [
           {
-            "name": "id_stadium",
+            "name": "id",
             "in": "path",
             "description": "ID of Games to return",
             "required": true,
@@ -597,7 +664,7 @@
       }
     },
 
-    "/stadiums/{id_stadium}": {
+    "/stadiums/{id}": {
       "get": {
         "description": "Retrieves one stadium by id",
         "security": [{ "bearerAuth": [] }],
@@ -605,7 +672,7 @@
         "tags": ["Stadium"],
         "parameters": [
           {
-            "name": "id_stadium",
+            "name": "id",
             "in": "path",
             "description": "ID of Stadium to return",
             "required": true,
@@ -637,7 +704,7 @@
         "tags": ["Stadium"],
         "parameters": [
           {
-            "name": "id_stadium",
+            "name": "id",
             "in": "path",
             "description": "ID of Stadium ",
             "required": true,
@@ -667,7 +734,7 @@
         "tags": ["Stadium"],
         "parameters": [
           {
-            "name": "id_stadium",
+            "name": "id",
             "in": "path",
             "description": "ID of Stadiums that needs to be updated",
             "required": true,
@@ -753,7 +820,7 @@
         }
       }
     },
-    "/teams/{id_teams}/initials": {
+    "/teams/{id}/initials": {
       "get": {
         "description": "Retrieves one team initials by id",
         "security": [{ "bearerAuth": [] }],
@@ -761,7 +828,7 @@
         "tags": ["Teams"],
         "parameters": [
           {
-            "name": "id_teams",
+            "name": "id",
             "in": "path",
             "description": "ID of Games to return",
             "required": true,
@@ -788,7 +855,7 @@
       }
     },
 
-    "/teams/{id_teams}": {
+    "/teams/{id}": {
       "get": {
         "description": "Retrieves one teams by id",
         "security": [{ "bearerAuth": [] }],
@@ -796,7 +863,7 @@
         "tags": ["Teams"],
         "parameters": [
           {
-            "name": "id_teams",
+            "name": "id",
             "in": "path",
             "description": "ID of Teams to return",
             "required": true,
@@ -828,7 +895,7 @@
         "tags": ["Teams"],
         "parameters": [
           {
-            "name": "id_teams",
+            "name": "id",
             "in": "path",
             "description": "ID of Teams ",
             "required": true,
@@ -861,7 +928,7 @@
         "tags": ["Teams"],
         "parameters": [
           {
-            "name": "id_teams",
+            "name": "id",
             "in": "path",
             "description": "ID of Teams that needs to be updated",
             "required": true,
@@ -892,6 +959,22 @@
           }
         }
       }
+    }
+  },
+
+  "userslogin": {
+    "type": "object",
+    "properties": {
+      "username": { "type": "string" },
+      "password": { "type": "string" }
+    }
+  },
+  "userspost": {
+    "type": "object",
+    "properties": {
+      "username": { "type": "string" },
+      "password": { "type": "string" },
+      "role": { "type": "string" }
     }
   },
   "competitions": {

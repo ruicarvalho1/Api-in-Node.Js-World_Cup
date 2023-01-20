@@ -3,5 +3,6 @@ module.exports = {
   stadiums: require("./stadiums"),
   teams: require("./teams"),
   games: require("./games"),
+  users: require("./users"),
   version: require("./version"),
 };

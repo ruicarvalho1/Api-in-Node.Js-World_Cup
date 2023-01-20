@@ -21,9 +21,47 @@ app.use(cors({ credentials: true, origin: true }));
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerConfig));
 app.use(bodyParser.urlencoded({ extended: false }));
 
+function inspectRoles(requiredRole) {
+  const score = {
+    viewers: 1,
+    editor: 2,
+    admin: 3,
+  };
+
+  return (req, res, next) => {
+    if (!requiredRole) {
+      return next();
+    }
+    const userRole = req.headers.score;
+    if (!userRole) {
+      return res.status(401).send("Não autorizado");
+    }
+    if (score[userRole] >= score[requiredRole]) {
+      return next();
+    }
+    res.status(401).send("Não autorizado");
+  };
+}
+
 [
   //get version
   { method: "get", url: "version", cb: controllers.version.get },
+
+  //get all users && getById users
+  { method: "get", url: "users", cb: controllers.users.getAllusers },
+  { method: "post", url: "users", cb: controllers.users.insertusers },
+  { method: "post", url: "users/login", cb: controllers.users.loginuser },
+  { method: "get", url: "users/:id", cb: controllers.users.getByIdusers },
+  {
+    method: "put",
+    url: "users/:id",
+    cb: controllers.users.updatebyIDUsers,
+  },
+  {
+    method: "delete",
+    url: "users/:id",
+    cb: controllers.users.deletebyIDusers,
+  },
 
   //get all competitions && getbyId competitions || put->UpdateWithBodyID || delete-> deletebyIDCompetitions
   { method: "get", url: "competitions", cb: controllers.competitions.getAll },
