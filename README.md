@@ -72,8 +72,8 @@ docker-compose down
 To enter in pg-admin the correct user and passwords are:
 
 ```sh
-username: ipvc@ipvc.pt
-password: ipvc
+username: ipvc
+password: ipvc@ipvc.pt
 ```
 
 ## Migrate table server
@@ -124,8 +124,11 @@ http://localhost:3001/doc/
 
 After that you need to create an Admin, Viewer and Editor for diferents creates. After that copy the token and use it on top like this:
 
+![alt text](https://user-images.githubusercontent.com/10317382/71958497-4c701480-31a5-11ea-91da-5b04f153458c.png)
+![alt text](https://i.stack.imgur.com/hmrOB.png)
+
 ```sh
-Bearer + token
+Bearer <token>
 ```
 
 ## Trabalho realizado por: Rui Carvalho e Nelson Freitas
