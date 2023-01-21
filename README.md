@@ -17,6 +17,7 @@ npm i cors
 npm i dotenv
 npm i swagger-ui-express
 npm i pg-pool
+npm i knex
 ```
 
 Create a file with name "docker-compose.yml". NOTE: Change both volumes for your correct directory
@@ -66,6 +67,29 @@ If you want to shut down the container run the follow command:
 docker-compose down
 ```
 
+## Pg-admin
+
+To enter in pg-admin the correct user and passwords are:
+
+```sh
+username: ipvc@ipvc.pt
+password: ipvc
+```
+
+## Migrate table server
+
+```sh
+cd sd
+cd dev
+npx knex migrate:latest
+```
+
+If you want to destroy the tables with knex, run the follow command
+
+```sh
+npx knex migrate:rollback
+```
+
 ## Start Server
 
 You need to to start the server if you want to test de API in Swagger
@@ -96,6 +120,12 @@ To test the API with Swagger you need to put in the search bar of your browser t
 
 ```sh
 http://localhost:3001/doc/
+```
+
+After that you need to create an Admin, Viewer and Editor for diferents creates. After that copy the token and use it on top like this:
+
+```sh
+Bearer + token
 ```
 
 ## Trabalho realizado por: Rui Carvalho e Nelson Freitas
